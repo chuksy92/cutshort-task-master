@@ -35,10 +35,31 @@ const createUser = catchAsync(async (req: AuthenticatedRequest, res: Response, n
 });
  
 
+// const getUsers = catchAsync(async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+//     const users = await User.find();
+//     res.status(200).json({ users });
+// });
+
 const getUsers = catchAsync(async (req: AuthenticatedRequest, res: Response, next: NextFunction) => { 
-    const users = await User.find();
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+
+    const users = await User.find().skip(startIndex).limit(limit);
+
+    const totalPages = Math.ceil(await User.countDocuments() / limit);
+
+    // Add pagination info to the response headers
+    res.set('X-Total-Count', await User.countDocuments() as unknown as string);
+    res.set('X-Page', page as unknown as string);
+    res.set('X-Per-Page', limit as unknown as string);
+    res.set('X-Total-Pages', totalPages as unknown as string);
+
     res.status(200).json({ users });
 });
+
 
 const updateUser = catchAsync(async (req: AuthenticatedRequest, res: Response, next: NextFunction) => { 
     const { id } = req.params;

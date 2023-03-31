@@ -16,8 +16,7 @@
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,            
     "strict": true,                                      
-    "skipLibCheck": true,
-    "allowImportingTsExtensions": true,                              
+    "skipLibCheck": true
   },
   "include": ["src/**/*.ts", "custom-error.d.ts", "src/utils/index.js", "server.ts", "src/index.ts"],
   "exclude": ["node_modules"]

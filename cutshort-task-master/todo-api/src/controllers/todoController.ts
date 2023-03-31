@@ -5,10 +5,31 @@ import AppError from '../utils/appError';
 import { AuthenticatedRequest} from '../interfaces';
 
 
+// const getTodos = catchAsync(async (req: AuthenticatedRequest, res: Response, next) => {
+//     const todos = await Todo.find().sort("-createdAt")
+//     res.status(200).json({ todos });
+// });
+
 const getTodos = catchAsync(async (req: AuthenticatedRequest, res: Response, next) => { 
-    const todos = await Todo.find().sort("-createdAt")
+    const page = parseInt(req.query.page as string) || 1; // default to first page
+    const limit = parseInt(req.query.limit as string) || 10; // default to 10 todos per page
+
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+
+    const todos = await Todo.find().sort("-createdAt").skip(startIndex).limit(limit);
+
+    const totalPages = Math.ceil(await Todo.countDocuments() / limit);
+
+    // Add pagination info to the response headers
+    res.set('X-Total-Count', await Todo.countDocuments() as unknown as string);
+    res.set('X-Page', page as unknown as string);
+    res.set('X-Per-Page', limit as unknown as string);
+    res.set('X-Total-Pages', totalPages as unknown as string);
+
     res.status(200).json({ todos });
 });
+
 
 const getUserTodos = catchAsync(async (req: AuthenticatedRequest, res: Response, next) => { 
     const  id  = req.user._id;
@@ -38,9 +59,13 @@ const getTodo = catchAsync(async (req: AuthenticatedRequest, res: Response, next
     const { id } = req.params;
 
     const todo = await Todo.findById(id);
-    if (!todo) next(new AppError('No todo found', 404));
+    if (!todo) {
+        next(new AppError('No todo found', 404))
+    } else {
 
-    res.status(200).json({ todo });
+        res.status(200).json({ todo });
+    }
+
 });
 
 
@@ -57,9 +82,13 @@ const updateTodo = catchAsync(async (req: AuthenticatedRequest, res: Response, n
         user: req.user._id
     }, { new: true });
 
-    if (!todo) next(new AppError('No todo found', 404));
+    if (!todo) {
+        next(new AppError('No todo found', 404))
+    } else {
 
-    res.status(200).json({ todo });
+        res.status(200).json({ todo });
+    }
+
 });
 
 const viewTodo = catchAsync(async (req: AuthenticatedRequest, res: Response, next) => { 
@@ -67,9 +96,13 @@ const viewTodo = catchAsync(async (req: AuthenticatedRequest, res: Response, nex
     
     // check if todo still exists
     const todo = await Todo.findById(todoId);
-    if (!todo) next(new AppError('No todo found', 404));
+    if (!todo) {
+        next(new AppError('No todo found', 404))
+    } else {
 
-    res.status(200).json({ todo });
+        res.status(200).json({ todo });
+    }
+
 });
 
 

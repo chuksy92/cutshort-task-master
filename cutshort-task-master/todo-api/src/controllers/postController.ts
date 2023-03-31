@@ -24,22 +24,69 @@ const createPost = catchAsync(async (req: AuthenticatedRequest, res: Response, n
 
 })
 
+// const getPosts = catchAsync(async (req: AuthenticatedRequest, res: Response, next) => {
+//     const posts = await Post.find();
+//     res.status(200).json({ posts });
+// })
+
 const getPosts = catchAsync(async (req: AuthenticatedRequest, res: Response, next) => { 
-    const posts = await Post.find();
+    const page = parseInt(req.query.page as string) || 1; // default to first page
+    const limit = parseInt(req.query.limit as string) || 10; // default to 10 posts per page
+
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+
+    const posts = await Post.find().skip(startIndex).limit(limit);
+
+    const totalPages = Math.ceil(await Post.countDocuments() / limit);
+
+    // Add pagination info to the response headers
+    res.set('X-Total-Count', await Post.countDocuments() as unknown as string);
+    res.set('X-Page', page as unknown as string);
+    res.set('X-Per-Page', limit as unknown as string);
+    res.set('X-Total-Pages', totalPages as unknown as string);
+
     res.status(200).json({ posts });
-})
+});
+
+
+// const getUserPosts = catchAsync(async (req: AuthenticatedRequest, res: Response, next) => {
+//     const id = req.user._id;
+//     const posts = await Post.find({ user: id }).sort("-createdAt");
+//     res.status(200).json({ posts });
+// })
 
 const getUserPosts = catchAsync(async (req: AuthenticatedRequest, res: Response, next) => { 
     const id = req.user._id;
-    const posts = await Post.find({ user: id }).sort("-createdAt");
+    const page = parseInt(req.query.page as string) || 1; // default to first page
+    const limit = parseInt(req.query.limit as string) || 10; // default to 10 posts per page
+
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+
+    const posts = await Post.find({ user: id }).sort("-createdAt").skip(startIndex).limit(limit);
+
+    const totalPages = Math.ceil(await Post.countDocuments({ user: id }) / limit);
+
+    // Add pagination info to the response headers
+    res.set('X-Total-Count', await Post.countDocuments({ user: id }) as unknown as string);
+    res.set('X-Page', page as unknown as string);
+    res.set('X-Per-Page', limit as unknown as string);
+    res.set('X-Total-Pages', totalPages as unknown as string);
+
     res.status(200).json({ posts });
-})
+});
+
 
 const getPost = catchAsync(async (req: Request, res: Response, next) => { 
     const { id } = req.params;
     const post = await Post.findById(id);
-    if (!post) next(new AppError('No post found', 404));
-    res.status(200).json({ post });
+    if (!post) {
+        next(new AppError('No post found', 404))
+    } else {
+        res.status(200).json({ post });
+
+    }
 })
 
 const updatePost = catchAsync(async (req: AuthenticatedRequest, res: Response, next) => { 
@@ -53,9 +100,13 @@ const updatePost = catchAsync(async (req: AuthenticatedRequest, res: Response, n
         user: req.user._id
     }, { new: true });
 
-    if (!post) next(new AppError('No post found', 404));
+    if (!post) {
+        next(new AppError('No post found', 404))
+    } else {
+        
+        res.status(200).json({ post });
+    }
 
-    res.status(200).json({ post });
 })
 
 const deletePost = catchAsync(async (req: Request, res: Response, next) => { 
