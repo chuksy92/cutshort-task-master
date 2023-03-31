@@ -13,6 +13,10 @@ To start the server, run the following command:
 
 type "yarn dev" in your terminal
 
+Test
+To run the tests, run the following command:
+type "yarn test" in your terminal
+
 This will start the server in development mode with Nodemon which will automatically restart the server when changes are made to the code.
 
 The server will start on http://localhost:3000 by default, and you can use Postman or any other REST client to test the API endpoints.

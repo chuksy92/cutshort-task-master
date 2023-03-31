@@ -38,7 +38,7 @@ const generateToken = (user) => {
 
 
 const verifyToken = (req, res, next) => {
-  console.log('here....')
+  // console.log('here....')
   const token = req.header('x-auth-token');
   if (!token) return res.status(401).send('Access denied. No token provided.');
 

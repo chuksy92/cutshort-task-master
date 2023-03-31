@@ -41,12 +41,12 @@ const getUsers = catchAsync(async (req: AuthenticatedRequest, res: Response, nex
 });
 
 const updateUser = catchAsync(async (req: AuthenticatedRequest, res: Response, next: NextFunction) => { 
-    const { users } = req.params;
+    const { id } = req.params;
     const { name, email, password } = req.body;
 
     if (!name || !email || !password) next(new AppError('Please add all the fields', 422));
 
-    const updatedUser = await User.findByIdAndUpdate(users, {
+    const updatedUser = await User.findByIdAndUpdate(id, {
         name,
         email,
         password

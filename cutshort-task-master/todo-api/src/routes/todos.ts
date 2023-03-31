@@ -11,7 +11,7 @@ router.get("/", restrictTo(["admin"]), todoController.getTodos);
 
 // todo routes
 router.post("/create", todoController.createTodo);
-router.route("/:id").put(todoController.updateTodo).get(todoController.getTodo).post(todoController.createTodo).delete(todoController.deleteTodo);
+router.route("/:id").put(todoController.updateTodo).get(todoController.getTodo).delete(todoController.deleteTodo);
 router.route("/view/:todoId").get(todoController.viewTodo);
 
 

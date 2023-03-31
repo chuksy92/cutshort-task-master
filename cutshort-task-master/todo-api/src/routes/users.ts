@@ -8,14 +8,13 @@ import { restrictTo, verifyToken } from '../utils';
 router.use(verifyToken)
 
 /* GET users listing. */
-router.get('/users', userController.getUsers);
-router.post('/users', userController.createUser);
+router.get('/allUsers', userController.getUsers);
+router.post('/create', userController.createUser);
 
 // All routes below this middleware will be protected
 router
 	.get('/:userId', userController.getUser)
 	.put(restrictTo(['admin']), userController.updateUser)
-	.post(restrictTo(['admin']), userController.updateUser)
 	.delete(restrictTo(['admin']), userController.deleteUser);
 
 
