@@ -11,14 +11,14 @@
         "@/*": ["src/*"],
         "@config/*": ["config/*"],
       },
-    "outDir": "dist",
+    "outDir": "./dist",
     "baseUrl": "./src",                             
     "forceConsistentCasingInFileNames": true,
-    "noEmit": true,            
+    "noEmit": false,            
     "strict": true,                                      
     "skipLibCheck": true
   },
-  "include": ["src/**/*.ts", "custom-error.d.ts", "src/utils/index.js", "server.ts", "src/index.ts"],
+  "include": ["src/**/*.ts", ".env", "custom-error.d.ts", "src/utils/index.ts", "server.ts", "src/index.ts"],
   "exclude": ["node_modules"]
  
 }

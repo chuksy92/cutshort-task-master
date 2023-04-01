@@ -5,10 +5,7 @@ import AppError from '../utils/appError';
 import { AuthenticatedRequest} from '../interfaces';
 
 
-// const getTodos = catchAsync(async (req: AuthenticatedRequest, res: Response, next) => {
-//     const todos = await Todo.find().sort("-createdAt")
-//     res.status(200).json({ todos });
-// });
+
 
 const getTodos = catchAsync(async (req: AuthenticatedRequest, res: Response, next) => { 
     const page = parseInt(req.query.page as string) || 1; // default to first page

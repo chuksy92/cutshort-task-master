@@ -24,10 +24,7 @@ const createPost = catchAsync(async (req: AuthenticatedRequest, res: Response, n
 
 })
 
-// const getPosts = catchAsync(async (req: AuthenticatedRequest, res: Response, next) => {
-//     const posts = await Post.find();
-//     res.status(200).json({ posts });
-// })
+
 
 const getPosts = catchAsync(async (req: AuthenticatedRequest, res: Response, next) => { 
     const page = parseInt(req.query.page as string) || 1; // default to first page
@@ -50,11 +47,7 @@ const getPosts = catchAsync(async (req: AuthenticatedRequest, res: Response, nex
 });
 
 
-// const getUserPosts = catchAsync(async (req: AuthenticatedRequest, res: Response, next) => {
-//     const id = req.user._id;
-//     const posts = await Post.find({ user: id }).sort("-createdAt");
-//     res.status(200).json({ posts });
-// })
+
 
 const getUserPosts = catchAsync(async (req: AuthenticatedRequest, res: Response, next) => { 
     const id = req.user._id;

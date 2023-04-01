@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 require("dotenv").config();
 import app from "./src/index";
-const port = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
 
 // Uncaught exception error handling
@@ -19,6 +19,7 @@ mongoose
   .connect(process.env.DATABASE, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    
 
   })
   .then(() => console.log("Connected to MongoDB..."))
@@ -30,8 +31,8 @@ mongoose
 
 
 
-const server = app.listen(port, () => {
-  console.log("listening on port " + port);
+const server = app.listen(PORT, () => {
+  console.log("listening on port " + PORT);
 });
 
 

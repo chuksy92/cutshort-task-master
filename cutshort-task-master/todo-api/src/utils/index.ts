@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 
 
 
-function validate(req) {
+export function validate(req) {
   const schema = Joi.object({
     email: Joi.string().required().email().min(5).max(50),
     password: Joi.string().required(),
@@ -12,7 +12,7 @@ function validate(req) {
     return schema.validate(req);
 }
 
- function validateContent(post) {
+export function validateContent(post) {
   const schema = Joi.object({
     userId: Joi.string().required(),
     title: Joi.string().required(),
@@ -22,13 +22,13 @@ function validate(req) {
 }
 
 
- const catchAsync = (fn) => {
+export const catchAsync = (fn) => {
   return (req, res, next) => {
     fn(req, res, next).catch((err) => next(err));
   };
 };
 
-const generateToken = (user) => { 
+export const generateToken = (user) => { 
   const token = jwt.sign(
 		{ _id: user._id, email: user.email, name: user.name, role: user.role },
 		process.env.TODO_PK
@@ -37,7 +37,7 @@ const generateToken = (user) => {
 };
 
 
-const verifyToken = (req, res, next) => {
+export const verifyToken = (req, res, next) => {
   // console.log('here....')
   const token = req.header('x-auth-token');
   if (!token) return res.status(401).send('Access denied. No token provided.');
@@ -53,7 +53,7 @@ const verifyToken = (req, res, next) => {
 }
 
 // Access control
-const restrictTo = (roles) => { 
+export const restrictTo = (roles) => { 
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
 			return res.status(403).json({
@@ -72,14 +72,6 @@ function validateComment(comment) {
 	return schema.validate(comment);
 }
 
-module.exports = {
-	validate,
-  validateContent,
-  validateComment,
-	catchAsync,
-	verifyToken,
-  generateToken,
-  restrictTo
-};
+
 
 

@@ -1,5 +1,5 @@
 import { Response, NextFunction} from 'express';
-import { catchAsync } from '../utils';
+import { catchAsync } from '../utils'
 import  User  from '../models/users'
 import AppError from '../utils/appError';
 import { AuthenticatedRequest } from '../interfaces';
@@ -35,10 +35,7 @@ const createUser = catchAsync(async (req: AuthenticatedRequest, res: Response, n
 });
  
 
-// const getUsers = catchAsync(async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-//     const users = await User.find();
-//     res.status(200).json({ users });
-// });
+
 
 const getUsers = catchAsync(async (req: AuthenticatedRequest, res: Response, next: NextFunction) => { 
     const page = parseInt(req.query.page as string) || 1;
