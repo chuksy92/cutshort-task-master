@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-import { verifyToken, restrictTo } from '../utils/index.js';
+import { verifyToken, restrictTo } from '../utils';
 import todoController from '../controllers/todoController';
 
 router.use(verifyToken);

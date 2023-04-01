@@ -3,7 +3,7 @@
 var express = require('express');
 const router = express.Router();
 import userController from '../controllers/userController';
-import { restrictTo, verifyToken } from '../utils/index.js';
+import { restrictTo, verifyToken } from '../utils';
 
 router.use(verifyToken)
 
