@@ -2,6 +2,7 @@
 #Todo Api
 
 This is a simple Todo API built with TypeScript and Express.js. It allows you to manage a list of tasks by creating, reading, updating and deleting them.
+You can also create posts and comment on posts, view posts and todo tasks respectively 
 
 Installation
 To get started, you need to install the dependencies using Yarn. Run the following command in your terminal to install the required packages:
