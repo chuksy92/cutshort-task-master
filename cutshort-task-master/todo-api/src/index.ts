@@ -1,5 +1,8 @@
 /// <reference path="./controllers/errorController.ts" />
+const redis = require('redis');
 
+// Create a Redis client
+const client = redis.createClient();
 
 const express = require("express");
 const app = express();
